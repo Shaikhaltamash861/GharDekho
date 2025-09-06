@@ -1,0 +1,130 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <!-- Background Gradient -->
+  <div class="background-gradient"></div>
+
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="logo-container">
+      <ion-icon name="home" class="logo-icon"></ion-icon>
+      <h1 class="app-title">Gharwale</h1>
+      <p class="app-subtitle">Find your perfect home</p>
+    </div>
+  </div>
+
+  <!-- Login Form Container -->
+  <div class="form-container">
+    <div class="form-card">
+      <!-- User Role Selection -->
+      <div class="role-selection">
+        <h2 class="form-title">Welcome Back</h2>
+        <p class="form-subtitle">Choose your role to continue</p>
+
+        <div class="role-buttons">
+          <button
+            class="role-button"
+            [class.active]="userRole() === 'tenant'"
+            (click)="selectUserRole('tenant')"
+          >
+            <ion-icon name="person"></ion-icon>
+            <span>I'm a Tenant</span>
+          </button>
+          <button
+            class="role-button"
+            [class.active]="userRole() === 'owner'"
+            (click)="selectUserRole('owner')"
+          >
+            <ion-icon name="business"></ion-icon>
+            <span>I'm an Owner</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <!-- Email -->
+        <ion-item
+          lines="none"
+          [class.error]="email?.invalid && email?.touched"
+        >
+          <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+          <ion-input formControlName="email" label="Email" label-placement="floating" fill="outline" placeholder="Email"></ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+        </div>
+
+        <!-- Password -->
+        <ion-item
+          lines="none"
+          class="custom-input"
+          [class.error]="password?.invalid && password?.touched"
+        >
+          <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+          <ion-input
+            [type]="isPasswordVisible() ? 'text' : 'password'"
+            placeholder="Enter your password"
+            formControlName="password"
+          ></ion-input>
+          <ion-button
+            fill="clear"
+            slot="end"
+            (click)="togglePasswordVisibility()"
+            class="password-toggle"
+          >
+            <ion-icon
+              [name]="isPasswordVisible() ? 'eye-off-outline' : 'eye-outline'"
+              class="toggle-icon"
+            ></ion-icon>
+          </ion-button>
+        </ion-item>
+        <div class="error-message" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">Password is required</span>
+          <span *ngIf="password?.errors?.['minlength']"
+            >Password must be at least 6 characters</span
+          >
+        </div>
+
+        <!-- Remember + Forgot -->
+        <div class="form-options">
+          <ion-checkbox formControlName="rememberMe" class="remember-checkbox"></ion-checkbox>
+          <ion-label class="remember-label">Remember me</ion-label>
+          <button type="button" class="forgot-password-btn" (click)="forgotPassword()">
+            Forgot Password?
+          </button>
+        </div>
+
+        <!-- Login Button -->
+        <ion-button
+          expand="block"
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || isLoading()"
+        >
+          <ion-spinner name="crescent" *ngIf="isLoading()"></ion-spinner>
+          <span *ngIf="!isLoading()">Sign In</span>
+        </ion-button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider"><span>or continue with</span></div>
+
+      <!-- Social -->
+      <ion-button
+        expand="block"
+        fill="outline"
+        class="google-button"
+        (click)="onGoogleLogin()"
+      >
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Continue with Google
+      </ion-button>
+
+      <!-- Sign Up -->
+      <div class="signup-link">
+        <span>Don't have an account? </span>
+        <button class="link-button" (click)="navigateToSignup()">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</ion-content>

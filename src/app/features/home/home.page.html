@@ -1,0 +1,59 @@
+
+
+/ home.page.html
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Header with Search -->
+  <div class="header-section">
+    <ion-searchbar 
+      placeholder="Search" 
+      show-clear-button="focus"
+      (ionInput)="onSearch($event)"
+      class="custom-searchbar">
+    </ion-searchbar>
+    
+    <ion-button fill="clear" class="filter-button">
+      <ion-icon name="options-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Category Chips -->
+  <div class="category-section">
+    <ion-chip 
+      *ngFor="let category of categories" 
+      [class.active-chip]="category.active"
+      (click)="onCategorySelect(category)">
+      {{ category.name }}
+    </ion-chip>
+  </div>
+
+  <!-- Property Cards -->
+  <div class="properties-section">
+    <ion-card *ngFor="let property of properties" class="property-card">
+      <div class="property-image">
+        <img [src]="property.image" [alt]="property.address">
+      </div>
+      <ion-card-content>
+        <h3 class="property-price">{{ property.price }}</h3>
+        <p class="property-address">{{ property.address }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Quick Actions Grid -->
+  <div class="quick-actions-section">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" *ngFor="let action of quickActions">
+          <ion-card class="action-card" [color]="action.color">
+            <ion-card-content>
+              <div class="action-content">
+                <ion-icon [name]="action.icon" class="action-icon"></ion-icon>
+                <h4 class="action-title">{{ action.title }}</h4>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
