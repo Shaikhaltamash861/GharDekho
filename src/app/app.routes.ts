@@ -35,10 +35,14 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/components/home-login/home-login.page').then( m => m.HomeLoginPage)
   },
 
-  // {
-  //   path: '',
-  //   loadComponent: () => import('./features/login/login.page').then( m => m.LoginPage)
-  // },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/login.page').then( m => m.LoginPage)
+  },
+  {
+    path: 'property-view',
+    loadComponent: () => import('./features/property-view/property-view.page').then( m => m.PropertyViewPage)
+  },
   // {
   //   path: 'signup',
   //   loadComponent: () => import('./features/signup/signup.page').then( m => m.SignupPage)

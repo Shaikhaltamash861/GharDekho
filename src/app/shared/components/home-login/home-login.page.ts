@@ -17,6 +17,8 @@ import {
   IonTabButton,
   IonLabel,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { logoFacebook, logoGoogle } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home-login',
@@ -31,10 +33,12 @@ export class HomeLoginPage {
 
   router = inject(Router)
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController) {
+    addIcons({logoFacebook, logoGoogle})
+   }
 
   login() {
-    this.router.navigate(['/tb/home']);
+    this.router.navigate(['/login']);
     // Handle login logic
     console.log('Login clicked');
   }

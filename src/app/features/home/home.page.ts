@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -29,6 +29,7 @@ import {
   bookmarkOutline,
   personOutline,
 } from 'ionicons/icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -55,9 +56,17 @@ import {
   ],
 })
 export class HomePage {
+
+  router = inject(Router);
   categories = [
     { name: 'Real Estate', active: true },
     { name: 'Apartment', active: false },
+    { name: 'Houses', active: false },
+    { name: 'Villas', active: false },
+    { name: 'Houses', active: false },
+    { name: 'Villas', active: false },
+    { name: 'Houses', active: false },
+    { name: 'Villas', active: false },
     { name: 'Houses', active: false },
     { name: 'Villas', active: false }
   ];
@@ -97,5 +106,9 @@ export class HomePage {
   onSearch(event: any) {
     const query = event.target.value.toLowerCase();
     console.log('Searching for:', query);
+  }
+
+  viewProperty(property){
+    this.router.navigate(['/property-view'], { queryParams: { id: property.id } });
   }
 }

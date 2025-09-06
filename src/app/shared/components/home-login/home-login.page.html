@@ -1,4 +1,4 @@
-<ion-content class="login-content" [fullscreen]="true">
+<ion-content class="login-content">
   <!-- Background Image Container -->
   <div class="hero-section">
     <div class="background-overlay"></div>
@@ -55,37 +55,25 @@
 
       <!-- Divider -->
       <div class="divider">
-        <span>or Login with</span>
+        <span>or</span>
       </div>
 
       <!-- Social Login Buttons -->
       <ion-button 
         expand="block" 
-        fill="clear" 
-        color="medium" 
+        fill="outline" 
         class="social-btn"
         (click)="continueWithGoogle()">
-        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE5LjE2IDEwLjIyNzNDMTkuMTYgOS41MTgyMiAxOS4wOTczIDguODI3MjcgMTguOTgyNyA4LjE4MTgySDEwLjIwNDVWMTIuMDVIMTUuMTkwOUMxNC45NTQ1IDEzLjI5OTUgMTQuMjQ1NSAxNC4zNTkxIDEzLjE5MDkgMTUuMDY4MlYxNy41NEgxNi4zMTgyQzE4LjIyNzMgMTUuNzYzNiAxOS4xNiAxMy4xODE4IDE5LjE2IDEwLjIyNzNaIiBmaWxsPSIjNDI4NUY0Ii8+CjxwYXRoIGQ9Ik0xMC4yMDQ1IDIwQzEzLjAwNDUgMjAgMTUuMzU0NSAxOS4wNjgyIDE2LjMyMTMgMTcuNTRMMTMuMTkzMiAxNS4wNjgyQzEyLjMxNzkgMTUuNjg2NCAxMS4xNzE0IDE2LjAyNzMgMTAuMjA2OCADE2LjAyNzNDNy41MDIzIDIuMDI3MyA1LjIzNDA1IDE0LjE2NTkgNS4yMzQwNSAxMS41NDU1WiIgZmlsbD0iIzM0QTg1MyIvPgo8cGF0aCBkPSJNNS4yMzQwNSAxMS41NDU1QzUuMjM0MDUgMTQuMzA5MSA2LjA2Njc1IDE2Ljg3NzMgNy41MDIzIDE4Ljg5ODNMNS4yMzQwNSAyMEM0LjMzMTg0IDIwIDMuNDc5NTcgMTkuNTkwOSAyLjg2MTEyIDE4Ljk3NzNMMC4yNzkzNCAxNi4zOTA5QzAuNzIwNDcgMTcuNDA4MSAyLjk5OTg0IDE4IDQuOTQzMTMgMThaIiBmaWxsPSIjRkJCQzA0Ii8+CjxwYXRoIGQ9Ik0xMC4yMDY4IDMuOTcyNzNDMTEuMjg0MSAzLjk3MjczIDEyLjI1NDUgNC4zNzI3MyAxMy4wNjM2IDUuMTU0NTZMTU45MDkxIDIuMzA5MDlDMTQuMzM2NCAwLjkwOTA5MSAxMi4zNTQ1IDAgMTAuMjA2OCAwQzYuMzgzOTQgMCA3LjQwMjMgNi42OTUzNSA1LjY2NjM2IDEwLjMwMjdMMS4wODcxNCA3LjM4NjM2QzMuNjUzNjQgMTUuNDc3NCA3LjY0NTczIDE0LjYzNjQgMTAuMjA2OCAzLjk3MjczWiIgZmlsbD0iI0VBNDMzNSIvPgo8L3N2Zz4K" alt="Google" class="social-icon">
+        <ion-icon slot="start" name="logo-google"></ion-icon>
         Continue with Google
       </ion-button>
 
       <ion-button 
         expand="block" 
-        fill="clear" 
-        color="medium" 
-        class="social-btn"
-        (click)="continueWithApple()">
-        <ion-icon name="logo-apple" class="social-icon"></ion-icon>
-        Continue with Apple
-      </ion-button>
-
-      <ion-button 
-        expand="block" 
-        fill="clear" 
-        color="medium" 
+        fill="outline"  
         class="social-btn"
         (click)="continueWithFacebook()">
-        <ion-icon name="logo-facebook" class="social-icon facebook-icon"></ion-icon>
+        <ion-icon slot="start" name="logo-facebook"></ion-icon>
         Continue with Facebook
       </ion-button>
     </div>

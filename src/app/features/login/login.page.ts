@@ -1,156 +1,97 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { IonInput,IonItem, IonLabel } from '@ionic/angular/standalone';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IonicModule, AlertController, LoadingController, ToastController, NavController } from '@ionic/angular';
+import { IonInput, IonButton, IonIcon, IonSpinner, IonContent } from '@ionic/angular/standalone';
 import { AuthService, LoginRequest } from 'src/app/core/services/auth/auth';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonicModule, IonInput,IonItem, IonLabel, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, IonInput, IonButton, IonIcon, IonSpinner, IonContent],
   providers: [AuthService, HttpClient],
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  private fb = inject(FormBuilder);
+  loginForm: FormGroup;
+  isPasswordVisible = false;
+  isLoading = false;
+
   private router = inject(Router);
-  private alertCtrl = inject(AlertController);
-  private loadingCtrl = inject(LoadingController);
-  private toastCtrl = inject(ToastController);
-  private authService = inject(AuthService);
-
-  loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    rememberMe: [false],
-  });
-
-  isPasswordVisible = signal(false);
-  isLoading = signal(false);
-  userRole = signal<'tenant' | 'owner'>('tenant');
-
-  get email() {
-    return this.loginForm.get('email');
-  }
-  get password() {
-    return this.loginForm.get('password');
+  constructor(
+    private formBuilder: FormBuilder,
+    private navCtrl: NavController,
+    private loadingController: LoadingController,
+    private alertController: AlertController
+  ) {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
   }
 
   togglePasswordVisibility() {
-    this.isPasswordVisible.set(!this.isPasswordVisible());
-  }
-
-  selectUserRole(role: 'tenant' | 'owner') {
-    this.userRole.set(role);
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
   async onLogin() {
-    if (this.loginForm.invalid) {
-      this.markFormGroupTouched();
-      return;
-    }
+    if (this.loginForm.valid) {
+      // const loading = await this.loadingController.create({
+      //   message: 'Signing in...',
+      //   duration: 2000
+      // });
 
-    const loading = await this.loadingCtrl.create({
-      message: 'Signing in...',
-      spinner: 'crescent',
-    });
-    await loading.present();
+      // await loading.present();
+      this.router.navigate(['/tb/home']);
 
-    try {
-      const loginData = {
-        ...this.loginForm.value,
-        role: this.userRole(),
-      };
-
-      const response = await this.authService.login(loginData);
-
-      if (response.success) {
-        await this.presentToast('Login successful!', 'success');
-        this.router.navigate(['/home']);
-      }
-    } catch (error: any) {
-      await this.presentToast(error.message || 'Login failed. Please try again.', 'danger');
-    } finally {
-      await loading.dismiss();
+      // Simulate API call
+      // setTimeout(async () => {
+      //   await loading.dismiss();
+      //   // Navigate to home or dashboard
+      //   this.navCtrl.navigateForward('/tb/home');
+      // }, 2000);
+    } else {
+      this.showValidationErrors();
     }
   }
 
-  async onGoogleLogin() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Connecting to Google...',
-      spinner: 'crescent',
+  async showValidationErrors() {
+    const alert = await this.alertController.create({
+      header: 'Invalid Input',
+      message: 'Please check your email and password.',
+      buttons: ['OK']
     });
-    await loading.present();
-
-    try {
-      const response = await this.authService.googleLogin(this.userRole());
-      if (response.success) {
-        await this.presentToast('Login successful!', 'success');
-        this.router.navigate(['/home']);
-      }
-    } catch (error: any) {
-      await this.presentToast(error.message || 'Google login failed.', 'danger');
-    } finally {
-      await loading.dismiss();
-    }
-  }
-
-  navigateToSignup() {
-    this.router.navigate(['/signup']);
-  }
-
-  async forgotPassword() {
-    this.router.navigate(['/home']);
-    const alert = await this.alertCtrl.create({
-      header: 'Reset Password',
-      message: 'Enter your email address to receive a password reset link.',
-      inputs: [
-        {
-          name: 'email',
-          type: 'email',
-          placeholder: 'Enter your email',
-        },
-      ],
-      buttons: [
-        { text: 'Cancel', role: 'cancel' },
-        {
-          text: 'Send Reset Link',
-          handler: async (data) => {
-            if (data.email) {
-              try {
-                await this.authService.forgotPassword(data.email);
-                await this.presentToast('Password reset link sent to your email!', 'success');
-              } catch {
-                await this.presentToast('Failed to send reset link.', 'danger');
-              }
-            }
-          },
-        },
-      ],
-    });
-
     await alert.present();
   }
 
-  private markFormGroupTouched() {
-    Object.keys(this.loginForm.controls).forEach((key) => {
-      const control = this.loginForm.get(key);
-      control?.markAsTouched();
-    });
+  goBack() {
+    this.navCtrl.back();
   }
 
-  private async presentToast(message: string, color: string) {
-    const toast = await this.toastCtrl.create({
-      message,
-      duration: 3000,
-      color,
-      position: 'top',
-      buttons: [{ text: 'Dismiss', role: 'cancel' }],
-    });
-    await toast.present();
+  forgotPassword() {
+    // Handle forgot password logic
+    console.log('Forgot password clicked');
   }
+
+  continueWithGoogle() {
+    console.log('Continue with Google');
+  }
+
+  continueWithApple() {
+    console.log('Continue with Apple');
+  }
+
+  continueWithFacebook() {
+    console.log('Continue with Facebook');
+  }
+
+  navigateToSignUp() {
+    this.navCtrl.navigateForward('/signup');
+  }
+
+  get email() { return this.loginForm.get('email'); }
+  get password() { return this.loginForm.get('password'); }
 }

@@ -35,3 +35,27 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+ion-header {
+    margin-top: 39px;
+    padding-top: var(--ion-safe-area-top);
+}
+
+.custom-searchbar .searchbar-input.sc-ion-searchbar-md {
+  
+    /* -webkit-padding-start: 3.4375rem; */
+    padding-inline-start: 42px;
+    padding-inline-end: 3.4375rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-position: left 8px center;
+    height: auto;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+.custom-searchbar .searchbar-search-icon.sc-ion-searchbar-md, .searchbar-cancel-button.sc-ion-searchbar-md{
+    top: 5px;
+}

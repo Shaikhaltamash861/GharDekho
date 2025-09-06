@@ -1,7 +1,5 @@
 
-
-/ home.page.html
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content class="ion-padding home-page">
   <!-- Header with Search -->
   <div class="header-section">
     <ion-searchbar 
@@ -11,8 +9,8 @@
       class="custom-searchbar">
     </ion-searchbar>
     
-    <ion-button fill="clear" class="filter-button">
-      <ion-icon name="options-outline"></ion-icon>
+    <ion-button fill="outline" shape="round" class="filter-button">
+      <ion-icon slot="icon-only" name="options-outline"></ion-icon>
     </ion-button>
   </div>
 
@@ -28,7 +26,7 @@
 
   <!-- Property Cards -->
   <div class="properties-section">
-    <ion-card *ngFor="let property of properties" class="property-card">
+    <ion-card *ngFor="let property of properties" class="property-card" (click)="viewProperty(property)">
       <div class="property-image">
         <img [src]="property.image" [alt]="property.address">
       </div>

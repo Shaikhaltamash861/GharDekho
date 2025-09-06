@@ -35,10 +35,10 @@ export class AppComponent {
 
     try {
       // Set background color to black
-      await StatusBar.setBackgroundColor({ color: '#000000' });
+      await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
 
       // Set status bar icons to light (white icons on black background)
-      await StatusBar.setStyle({ style: Style.Light });
+      await StatusBar.setStyle({ style: Style.Dark });
 
       // (Optional) make sure it’s not hidden
       await StatusBar.show();
