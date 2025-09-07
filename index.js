@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const { mongoDB } = require('./configs/db');
 const userRoutes  = require('./routes/user.routes');
 const propertyroutes = require('./routes/property.routes');
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/api', userRoutes);
 app.use('/api', propertyroutes);
