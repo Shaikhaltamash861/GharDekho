@@ -42,3 +42,5 @@ Thumbs.db
 
 # Uploads (if storing locally before Cloudinary)
 uploads/
+
+serviceAccountKey.json

@@ -19,10 +19,12 @@ app.use('/api', userRoutes);
 app.use('/api', propertyroutes);
 app.use('/api', contactReqRoutes);
 app.use('/api', imageUploadRoutes);
+app.post('/api/notify', require('./controllers/notification.controller').sendNotification);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+const HOST = '0.0.0.0';
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

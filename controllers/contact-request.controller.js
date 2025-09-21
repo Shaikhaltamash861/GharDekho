@@ -1,5 +1,7 @@
 const ContactRequest = require("../models/contact-req.model");
 const Property = require("../models/property.model");
+const getFcmToken = require("../utils/getFCM");
+const { notificationHandler } = require("./notification.controller");
 
 // Create new contact request
 const createContactRequest = async (req, res) => {
@@ -38,6 +40,11 @@ const createContactRequest = async (req, res) => {
     });
 
     await newRequest.save();
+    const fcmToken = await getFcmToken(ownerId);
+    notificationHandler(fcmToken, "New Contact Request", `You have a new contact request for your property.`);
+
+
+    console.log("Owner FCM Token:", fcmToken);
 
     res.status(201).json({
       message: "Contact request sent successfully",

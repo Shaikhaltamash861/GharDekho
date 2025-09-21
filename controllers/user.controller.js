@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 const generateToken = require("../utils/generateToken");
+const mongoose = require("mongoose");
 
 // @desc    Register a new user (owner or tenant)
 // @route   POST /api/users/signup
@@ -88,4 +89,25 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getProfile };
+const updateFcmToken = async (req, res) => {
+  try {
+    const { fcmToken, userId } = req.body;
+    if (!fcmToken) {
+      return res.status(400).json({ message: "FCM token is required" });
+    }
+    const user = await User.updateOne(
+      {_id: new mongoose.Types.ObjectId(userId)},
+      { fcmToken },
+      { new: true }
+    ).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error("Update FCM token error:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { signup, login, getProfile, updateFcmToken };

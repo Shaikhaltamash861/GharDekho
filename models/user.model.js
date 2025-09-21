@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
       enum: ["owner", "tenant"],
       required: true, // signup के समय user select करेगा
     },
+    fcmToken: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );
