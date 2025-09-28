@@ -24,7 +24,8 @@ const getAllProperties = async (req, res) => {
             propertyType,
             minPrice,
             maxPrice,
-            bedrooms
+            bedrooms,
+            ownerId
         } = req.query;
 
         page = parseInt(page);
@@ -32,6 +33,7 @@ const getAllProperties = async (req, res) => {
 
         // 📌 Filters
         const filter = {};
+        if (ownerId) filter.ownerId = ownerId;
         if (city) filter["address.city"] = city;
         if (state) filter["address.state"] = state;
         if (propertyType) filter.propertyType = propertyType;

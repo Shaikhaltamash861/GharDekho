@@ -1,11 +1,12 @@
 const ContactRequest = require("../models/contact-req.model");
 const Property = require("../models/property.model");
+const Conversation = require("../models/conversation.model");
 const getFcmToken = require("../utils/getFCM");
 const { notificationHandler } = require("./notification.controller");
 
 // Create new contact request
 const createContactRequest = async (req, res) => {
-   try {
+  try {
     const { propertyId, message, phone } = req.body;
     const requesterId = req.user.id; // from auth middleware
 
@@ -40,10 +41,16 @@ const createContactRequest = async (req, res) => {
     });
 
     await newRequest.save();
+    const conversation = await Conversation.create({
+      contactRequestId: newRequest._id,
+      participants: [requesterId, ownerId],
+      lastMessage: message || "",
+      updatedAt: Date.now()
+    });
+    console.log("New Conversation Created:", conversation);
+
     const fcmToken = await getFcmToken(ownerId);
     notificationHandler(fcmToken, "New Contact Request", `You have a new contact request for your property.`);
-
-
     console.log("Owner FCM Token:", fcmToken);
 
     res.status(201).json({
@@ -58,7 +65,7 @@ const createContactRequest = async (req, res) => {
 
 // Get all contact requests (admin / owner)
 const getAllContactRequests = async (req, res) => {
-    try {
+  try {
     const { page = 1, limit = 10, status } = req.query;
     const { role, id: userId } = req.user;
 
@@ -104,20 +111,20 @@ const getAllContactRequests = async (req, res) => {
 
 // Get single contact request
 const getContactRequestById = async (req, res) => {
-    try {
-        const request = await ContactRequest.findById(req.params.id)
-            .populate("propertyId", "title rent address")
-            .populate("requesterId", "name email phone")
-            .populate("ownerId", "name email phone");
+  try {
+    const request = await ContactRequest.findById(req.params.id)
+      .populate("propertyId", "title rent address")
+      .populate("requesterId", "name email phone")
+      .populate("ownerId", "name email phone");
 
-        if (!request) {
-            return res.status(404).json({ success: false, message: "Request not found" });
-        }
-
-        res.json({ success: true, data: request });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+    if (!request) {
+      return res.status(404).json({ success: false, message: "Request not found" });
     }
+
+    res.json({ success: true, data: request });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 };
 
 // Update status of contact request (owner only)
@@ -168,32 +175,32 @@ const updateContactRequest = async (req, res) => {
 
 // Delete contact request (optional)
 const deleteContactRequest = async (req, res) => {
-    try {
-        const request = await ContactRequest.findById(req.params.id);
+  try {
+    const request = await ContactRequest.findById(req.params.id);
 
-        if (!request) {
-            return res.status(404).json({ success: false, message: "Request not found" });
-        }
-
-        // Owner or requester can delete
-        if (
-            request.ownerId.toString() !== req.user.id &&
-            request.requesterId.toString() !== req.user.id
-        ) {
-            return res.status(403).json({ success: false, message: "Not authorized" });
-        }
-
-        await request.deleteOne();
-        res.json({ success: true, message: "Contact request deleted" });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+    if (!request) {
+      return res.status(404).json({ success: false, message: "Request not found" });
     }
+
+    // Owner or requester can delete
+    if (
+      request.ownerId.toString() !== req.user.id &&
+      request.requesterId.toString() !== req.user.id
+    ) {
+      return res.status(403).json({ success: false, message: "Not authorized" });
+    }
+
+    await request.deleteOne();
+    res.json({ success: true, message: "Contact request deleted" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 };
 
 module.exports = {
-    createContactRequest,
-    getAllContactRequests,
-    getContactRequestById,
-    updateContactRequest,
-    deleteContactRequest,
+  createContactRequest,
+  getAllContactRequests,
+  getContactRequestById,
+  updateContactRequest,
+  deleteContactRequest,
 };

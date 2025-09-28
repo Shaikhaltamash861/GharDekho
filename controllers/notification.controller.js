@@ -2,7 +2,6 @@
 const admin = require('firebase-admin');
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-console.log("FIREBASE_SERVICE_ACCOUNT_KEY:", process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY ?? "", "base64").toString("utf8"));
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
